@@ -215,6 +215,21 @@ static int mbim_apdu_interface_logic_channel_open(
     struct mbim_data *mbim_priv = ctx->apdu.interface->userdata;
     g_autoptr(GError) error = NULL;
     guint8 channel_id;
+    
+    // Print attributes of mbim_priv
+    fprintf(stderr, "mbim_priv:\n");
+    fprintf(stderr, "  device_path: %s\n", mbim_priv->device_path ? mbim_priv->device_path : "(null)");
+    fprintf(stderr, "  last_channel_id: %d\n", mbim_priv->last_channel_id);
+    fprintf(stderr, "  use_proxy: %s\n", mbim_priv->use_proxy ? "true" : "false");
+    fprintf(stderr, "  uim_slot: %u\n", mbim_priv->uim_slot);
+    fprintf(stderr, "  context: %p\n", (void *)mbim_priv->context);
+    fprintf(stderr, "  device: %p\n", (void *)mbim_priv->device);
+
+
+    fprintf(stderr, "AID content: ");
+    for (uint8_t i = 0; i < aid_len; ++i)
+        fprintf(stderr, "%02X ", aid[i]);
+    fprintf(stderr, "\n");
 
     MbimMessage *request = mbim_message_ms_uicc_low_level_access_open_channel_set_new(
         aid_len, aid, 0, 1, &error
